@@ -14,7 +14,6 @@ def extract_features(path):
     features['NOS'] = clinical.Histology.apply(lambda x: unsensitive_compare(x, "nos")) | clinical.Histology.apply(lambda x: unsensitive_compare(x, "NSCLC NOS (not otherwise specified)")) 
     features['age'] = clinical.age
     features.age[np.isnan(features.age)] = 0
-    features = features.drop("PatientID", axis=1)
     return features
 
 def unsensitive_compare(str1, str2):
