@@ -25,14 +25,13 @@ def unsensitive_compare(str1, str2):
     
     
 def extract_images(path, masked = True):
-    imgs = np.array([])
     dirs = glob(path+"images/*.npz" )
     scan_size = (np.load(dirs[0])['scan']).shape
-    imgs = np.zeros((len(dirs), scan_size[0], scan_size[1], scan_size[2]))
+    imgs = np.zeros((len(dirs), scan_size[0], scan_size[1], scan_size[2], 1))
     for i, d in enumerate(dirs):
         archive  = np.load(d)
         scan = archive ['scan']
         if masked:
             scan = scan * archive['mask']
-        imgs[i,:,:,:] =  scan
+        imgs[i,:,:,:, 0] =  scan
     return imgs
