@@ -1,13 +1,14 @@
-#path = 'C:/Users/Pierre Pinson/Documents/Cours/SupÃ©lec/3A/Stages/Owkin ML challenge/x_train/'
+#path = 'C:/Users/Pierre Pinson/Documents/Cours/Supélec/3A/Stages/ML-challenge-Owkin/x_train/'
 import numpy as np
 import pandas as pd
+from glob import glob
 
 
 
 def extract_features(path):
     clinical = pd.read_csv(path+'features/clinical_data.csv', sep=',')
 
-    features = (pd.read_csv(path+'features/radiomics.csv', sep=',', header = 1))
+    features = pd.read_csv(path+'features/radiomics.csv', sep=',', header = 1)
     features['Adenocarcinoma'] = clinical.Histology.apply(lambda x: unsensitive_compare(x, "Adenocarcinoma"))
     features['Large cell'] = clinical.Histology.apply(lambda x: unsensitive_compare(x, "large cell")) 
     features['Squamous cell carcinoma'] = clinical.Histology.apply(lambda x: unsensitive_compare(x, "squamous cell carcinoma"))
@@ -21,3 +22,17 @@ def unsensitive_compare(str1, str2):
         return int(str1.lower() == str2.lower())
     else:
         return 0
+    
+    
+def extract_images(path, masked = True):
+    imgs = np.array([])
+    dirs = glob(path+"images/*.npz" )
+    scan_size = (np.load(dirs[0])['scan']).shape
+    imgs = np.zeros((len(dirs), scan_size[0], scan_size[1], scan_size[2]))
+    for i, d in enumerate(dirs):
+        archive  = np.load(d)
+        scan = archive ['scan']
+        if masked:
+            scan = scan * archive['mask']
+        imgs[i,:,:,:] =  scan
+    return imgs
