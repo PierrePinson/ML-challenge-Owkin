@@ -2,7 +2,7 @@
 import numpy as np
 import pandas as pd
 from glob import glob
-
+from statsmodels.stats.outliers_influence import variance_inflation_factor    
 
 
 def extract_features(path):
@@ -35,3 +35,22 @@ def extract_images(path, masked = True):
             scan = scan * archive['mask']
         imgs[i,:,:,:, 0] =  scan
     return imgs
+
+def calculate_vif_(X, thresh=1):
+    variables = list(range(X.shape[1]))
+    dropped = True
+    while dropped:
+        dropped = False
+        vif = [variance_inflation_factor(X.iloc[:, variables].values, ix)
+               for ix in range(X.iloc[:, variables].shape[1])]
+
+        maxloc = vif.index(max(vif))
+        if max(vif) > thresh:
+            #print('dropping \'' + X.iloc[:, variables].columns[maxloc] +
+            #      '\' at index: ' + str(maxloc))
+            del variables[maxloc]
+            dropped = True
+
+    print('Remaining variables:')
+    print(X.columns[variables])
+    return X.iloc[:, variables]
