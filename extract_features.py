@@ -15,6 +15,9 @@ def extract_features(path):
     features['NOS'] = clinical.Histology.apply(lambda x: unsensitive_compare(x, "nos")) | clinical.Histology.apply(lambda x: unsensitive_compare(x, "NSCLC NOS (not otherwise specified)")) 
     features['age'] = clinical.age
     features.age[np.isnan(features.age)] = 0
+    features['tumor_size'] = extract_tumor_size(path)
+    
+    
     return features
 
 def unsensitive_compare(str1, str2):
@@ -23,7 +26,16 @@ def unsensitive_compare(str1, str2):
     else:
         return 0
     
-    
+def extract_tumor_size(path):
+    dirs = glob(path+"images/*.npz" )
+    tumor_sizes = np.zeros(len(dirs))
+    for i, d in enumerate(dirs):
+        archive  = np.load(d)
+        tumor_sizes[i] = np.sum(archive['mask'])
+    return tumor_sizes
+
+
+
 def extract_images(path, masked = True):
     dirs = glob(path+"images/*.npz" )
     scan_size = (np.load(dirs[0])['scan']).shape
