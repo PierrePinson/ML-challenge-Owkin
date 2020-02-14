@@ -10,6 +10,8 @@ I didn't have time to implement a CNN. So I just merged radiomic and clinical fe
 The functions for features extraction are in the python module "extract_features.py"
 
 ## Model comparison
+In order to try model without submitting each time, I split the dataset in a train set and a validation set. 
+
 I compared different models found in the litterature. First I tried a basic Random Forest to have an idea how data is separable. This model performed poorely with a c_index of 0.55 +-0.03.
 
 Then I tried the Cox model that was the state of the art at the beginning of survival analysis. 
