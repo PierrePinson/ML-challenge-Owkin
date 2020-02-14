@@ -17,7 +17,7 @@ This model performed a decent score (c_index around 0.65)
 
 I tried then a Random Forest model based on Cox model from the library pysurv. The c_index result was far better than the previous Cox model (c_index around 0.70)
 
-I finally chose a two layer simple NN with a custom loss adapted to censored data, from the library [DeepSurv] (https://arxiv.org/abs/1606.00931(https://arxiv.org/abs/1606.00931). The result was a little better than the random forest (**c_index around 0.71**). That is why I was surprised when I see a 0.55 score on the test set, and I am afraid I made an error writing the .csv file. Unfortunately I wasn't allowed to make an other submission.
+I finally chose a two layer simple NN with a custom loss adapted to censored data, from the library [DeepSurv] (https://arxiv.org/abs/1606.00931). The result was a little better than the random forest (**c_index around 0.71**). That is why I was surprised when I see a 0.55 score on the test set, and I am afraid I made an error writing the .csv file. Unfortunately I wasn't allowed to make an other submission.
 
 ## What else I could have done
 I didn't use the radio images. I could have use them through a CNN. If I a had more time, I would have built a CNN, and add the clinical features after the max pooling and then do a regression on these features. 
